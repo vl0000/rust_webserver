@@ -1,5 +1,5 @@
-use std::{io::{BufRead, BufReader}, net::TcpStream};
-
+use std::{io::{self, BufRead, BufReader, Error}, net::TcpStream};
+use std::fs;
 /// Request serialiser to make it easier to work with them
 pub struct Request {
         pub method: String,
@@ -56,8 +56,38 @@ impl Response {
     }
 
     pub fn to_string(&self) -> String {
-        let response = format!("{} {}\r\n\r\n{}", self.version, self.status, self.body);
+        let response:String = format!("{} {}\r\n\r\n{}", self.version, self.status, self.body);
 
         return response;
     }
+
+
+    /// Creates a response, with a HTML document as a body
+    pub fn html_response(path: &str) -> Result<Response, Error>{
+        let document: String = get_html_document(path)?;
+
+        let response: Response = Response {
+            version: "HTTP/1.1".to_string(),
+            status: "200 Ok".to_string(),
+            body: document
+        };
+        
+        Ok(response)
+    }
+}
+
+
+/// WIP
+/// Takes a path for a html document.
+fn get_html_document(path: &str) -> Result <String, io::Error> {
+
+    let file = match fs::read(path) {
+        Ok(file) => {
+            String::from_utf8_lossy(&file)
+                .to_string()
+        },
+        Err(e) => return Err(e)
+    };
+    
+    Ok(file)
 }
