@@ -1,2 +1,2 @@
-/// Functions and structs related to requests and serialising them.
-pub mod request;
+/// Functions and structs related to HTTP messaging such as Requests, and Responses
+pub mod messaging;

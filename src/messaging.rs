@@ -41,3 +41,23 @@ impl Request {
     }
 
 }
+
+pub struct Response {
+    pub version: String,
+    pub status: String,
+    pub body: String,
+}
+
+
+impl Response {
+    /// Returns a new response
+    pub fn new(version: String, status: String, body: String) -> Response {
+        Response {version: version, status: status, body: body }
+    }
+
+    pub fn to_string(&self) -> String {
+        let response = format!("{} {}\r\n\r\n{}", self.version, self.status, self.body);
+
+        return response;
+    }
+}
