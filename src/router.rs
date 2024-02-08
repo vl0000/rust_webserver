@@ -29,6 +29,8 @@ impl Router {
                         };
                         stream.write_all(response.to_string().as_bytes()).unwrap();
                 }
+                // If the wrong method is used, the server does not respond
+                //TODO respond
         }
 
         pub fn new() -> Router {

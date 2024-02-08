@@ -18,4 +18,8 @@ impl Server {
         }
     }
 
+    pub fn new(address: &str) -> Server{
+        Server { address: address.to_string() }
+    }
+
 }
