@@ -4,7 +4,6 @@ use rust_webserver::messaging::{Request, Response};
 
 fn handle_connect(mut stream: &TcpStream) {
 
-    //let response = "HTTP/1.1 200 OK\r\n\r\n<h1>Ok!</h1>";
     let resp = Response::html_response("./index.html").unwrap();
 
     stream.write_all(resp.to_string().as_bytes()).unwrap();

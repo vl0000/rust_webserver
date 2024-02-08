@@ -42,6 +42,7 @@ impl Request {
 
 }
 
+/// Response builder
 pub struct Response {
     pub version: String,
     pub status: String,
