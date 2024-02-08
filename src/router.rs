@@ -8,11 +8,12 @@ pub struct Router {
 }
 
 impl Router {
-
+        /// Adds a new handler for GET requests
         pub fn handle_get (&mut self, path: &str, handler: &'static dyn Fn(Request) -> Response) {
                 self.get.insert(path.to_string(), Box::new(handler));
         }
-
+        /// Takes a valid request and routes it to the apropriate handler
+        /// If one is not found, it writes a 404 response to the stream
         pub fn consume_request(&self, stream: &mut TcpStream){
                 let req = Request::from_stream(stream);
 
