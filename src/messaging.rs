@@ -78,11 +78,13 @@ impl Response {
 }
 
 
+//TODO add a config that changes the base path
 /// WIP
 /// Takes a path for a html document.
 fn get_html_document(path: &str) -> Result <String, io::Error> {
+    let base: String = String::from("./static/");
 
-    let file = match fs::read(path) {
+    let file = match fs::read(base + path) {
         Ok(file) => {
             String::from_utf8_lossy(&file)
                 .to_string()
