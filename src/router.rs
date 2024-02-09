@@ -1,4 +1,4 @@
-use std::{collections::HashMap, io::Write, net::TcpStream};
+use std::{collections::HashMap, fs, io::Write, net::TcpStream};
 
 use crate::messaging::{Request, Response};
 
@@ -16,7 +16,8 @@ impl Router {
         /// If one is not found, it writes a 404 response to the stream
         pub fn consume_request(&self, stream: &mut TcpStream){
                 let req = Request::from_stream(stream);
-
+                println!("{}", &req.endpoint);
+                
                 if req.method == "GET" {
                         let response: Response = match self.get.get(&req.endpoint) {
                                 Some(handler) => {
@@ -39,4 +40,22 @@ impl Router {
                         get: HashMap::new()
                 }
         }
+}
+pub fn get_static_file(path: &str, resource: &str) -> Result<String, std::io::Error> {
+    // TODO return a 404 if not found
+    let file_name: &str = resource.strip_prefix("/").unwrap();
+
+    let file = match fs::read(path.to_string() + file_name) {
+
+        Ok(f) => {
+            String::from_utf8_lossy(&f)
+            .to_string()
+        }
+        Err(e) => {
+            return Err(e)
+        }
+
+    };
+    return Ok(file);
+ 
 }
