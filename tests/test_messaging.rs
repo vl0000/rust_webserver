@@ -16,9 +16,21 @@ mod tests{
         let file = get_static_file("./static/", "index.html").unwrap();
 
         // TODO response should start taking &str;
-        let response = Response::file_response(file_format, file.clone());
+        let response = Response::file_response(file_format, "index.html");
 
         assert_eq!(response.status, "200 OK");
         assert_eq!(response.body, file);
+    }
+
+    #[test]
+    fn can_send_css() {
+        let file_format: &str = utils::get_file_format("style.css")
+        .unwrap();
+        let file = get_static_file("./static/", "/style.css").unwrap();
+
+        let response = Response::file_response(file_format, "/style.css");
+
+        assert_eq!(response.status, "200 OK");
+        assert_eq!(response.body, format!("<style>{}</style>", &file));
     }
 }

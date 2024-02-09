@@ -28,5 +28,4 @@ mod tests {
         my_router.handle_get("/", &handler);
     }
 
-
 }

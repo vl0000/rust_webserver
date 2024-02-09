@@ -1,5 +1,7 @@
 use std::{io::{self, BufRead, BufReader, Error}, net::TcpStream};
 use std::fs;
+
+use crate::utils;
 /// Request serialiser to make it easier to work with them
 pub struct Request {
         pub method: String,
@@ -85,7 +87,14 @@ impl Response {
     }
 
     /// Builds a response based on a file extension, JS, HTML, or CSS;
-    pub fn file_response(file_format: &str, file: String) -> Response {
+    /// In case of failure, it returns a response containing a HTTP error
+    pub fn file_response(file_format: &str, file_name: &str) -> Response {
+
+        let file: String = match utils::get_static_file("./static/", file_name) {
+            Ok(file) => file,
+            Err(_) => return Response::http_error("404", "Not Found")
+        };
+
         let body: String = match file_format {
             "html" => file,
             "css" => format!("<style>{}</style>", file),
