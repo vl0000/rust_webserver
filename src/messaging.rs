@@ -82,7 +82,23 @@ impl Response {
                 status_code.to_string(),
                 format!("<h1>{}</h1>", message)
         )
-}
+    }
+
+    /// Builds a response based on a file extension, JS, HTML, or CSS;
+    pub fn file_response(file_format: &str, file: String) -> Response {
+        let body: String = match file_format {
+            "html" => file,
+            "css" => format!("<style>{}</style>", file),
+            "js" => format!("<script>{}</script>", file),
+            _ => return Response::http_error("404", "Not Found")
+        };
+
+        Response::new(
+            "HTTP/1.1".to_string(),
+            "200 OK".to_string(),
+            body
+        )
+    }
 }
 
 

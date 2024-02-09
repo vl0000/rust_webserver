@@ -9,7 +9,10 @@ pub fn get_file_format(file_name: &str) -> Result<&str, &str>{
 
 pub fn get_static_file(path: &str, resource: &str) -> Result<String, std::io::Error> {
     // TODO return a 404 if not found
-    let file_name: &str = resource.strip_prefix("/").unwrap();
+    let file_name: &str = match resource.strip_prefix("/") {
+        Some(file_name) => file_name,
+        None => resource
+    };
 
     let file = match fs::read(path.to_string() + file_name) {
 

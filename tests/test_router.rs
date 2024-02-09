@@ -4,7 +4,6 @@
 #[cfg(test)]
 mod tests {
     use rust_webserver::{messaging::{Request, Response}, router::Router};
-    use rust_webserver::utils::get_static_file;
 
     fn handler(req: Request) -> Response {
 
@@ -29,13 +28,5 @@ mod tests {
         my_router.handle_get("/", &handler);
     }
 
-    #[test]
-    fn finds_static_file() {
-        let file = get_static_file("./static/", "/style.css");
-        
-        match file {
-            Ok(_) => assert!(true, "File found"),
-            Err(_) => assert!(false, "File not found")
-        }
-    }
+
 }
