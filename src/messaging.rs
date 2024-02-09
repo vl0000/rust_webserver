@@ -66,6 +66,7 @@ impl Response {
 
 
     /// Creates a response, with a HTML document as a body
+    #[deprecated]
     pub fn html_response(path: &str) -> Result<Response, Error>{
         let document: String = get_html_document(path)?;
 
@@ -95,6 +96,8 @@ impl Response {
             Err(_) => return Response::http_error("404", "Not Found")
         };
 
+        // Javascript requires a content-type header
+        //TODO implement it
         let body: String = match file_format {
             "html" => file,
             "css" => file,
