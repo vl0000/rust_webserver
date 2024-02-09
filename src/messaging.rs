@@ -97,8 +97,8 @@ impl Response {
 
         let body: String = match file_format {
             "html" => file,
-            "css" => format!("<style>{}</style>", file),
-            "js" => format!("<script>{}</script>", file),
+            "css" => file,
+            "js" => file,
             _ => return Response::http_error("404", "Not Found")
         };
 
