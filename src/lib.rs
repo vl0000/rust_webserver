@@ -4,3 +4,6 @@ pub mod messaging;
 pub mod router;
 
 pub mod server;
+
+/// Miscellaneous functions for dealing with files
+pub mod utils;

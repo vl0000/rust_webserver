@@ -23,11 +23,9 @@ impl Router {
                                 Some(handler) => {
                                         handler(req)
                                 },
-                                None => Response::new(
-                                        "HTTP/1.1".to_string(),
-                                        "404".to_string(),
-                                        "<h1>Route not found</h1>".to_string()
-                                )
+                                None => {
+                                        Response::http_error("404", "Not found")
+                                }
                         };
                         stream.write_all(response.to_string().as_bytes()).unwrap();
                 }
@@ -40,6 +38,7 @@ impl Router {
                         get: HashMap::new()
                 }
         }
+
 }
 pub fn get_static_file(path: &str, resource: &str) -> Result<String, std::io::Error> {
     // TODO return a 404 if not found

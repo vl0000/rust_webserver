@@ -75,6 +75,14 @@ impl Response {
         
         Ok(response)
     }
+
+    pub fn http_error(status_code: &str, message: &str) -> Response {
+        Response::new(
+                "HTTP/1.1".to_string(),
+                status_code.to_string(),
+                format!("<h1>{}</h1>", message)
+        )
+}
 }
 
 
