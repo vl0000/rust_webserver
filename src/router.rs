@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, io::Write, net::TcpStream};
+use std::{collections::HashMap, io::Write, net::TcpStream};
 
 use crate::messaging::{Request, Response};
 
@@ -39,22 +39,4 @@ impl Router {
                 }
         }
 
-}
-pub fn get_static_file(path: &str, resource: &str) -> Result<String, std::io::Error> {
-    // TODO return a 404 if not found
-    let file_name: &str = resource.strip_prefix("/").unwrap();
-
-    let file = match fs::read(path.to_string() + file_name) {
-
-        Ok(f) => {
-            String::from_utf8_lossy(&f)
-            .to_string()
-        }
-        Err(e) => {
-            return Err(e)
-        }
-
-    };
-    return Ok(file);
- 
 }

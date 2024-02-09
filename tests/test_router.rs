@@ -3,7 +3,8 @@
 
 #[cfg(test)]
 mod tests {
-    use rust_webserver::{messaging::{Request, Response}, router::{get_static_file, Router}};
+    use rust_webserver::{messaging::{Request, Response}, router::Router};
+    use rust_webserver::utils::get_static_file;
 
     fn handler(req: Request) -> Response {
 
