@@ -63,7 +63,7 @@ impl Response {
 
         let headers = self.headers.join("\r\n");
 
-        let response:String = format!("{} {}\r\n{}\r\n{}", self.version, self.status, headers, self.body);
+        let response:String = format!("{} {}\r\n{}\r\n\r\n{}", self.version, self.status, headers, self.body);
 
         return response;
     }
@@ -103,8 +103,6 @@ impl Response {
             Err(_) => return Response::http_error("404", "Not Found")
         };
 
-        // Javascript requires a content-type header
-        //TODO implement it
         let body: String = match file_format {
             "html" => file,
             "css" => file,
@@ -113,9 +111,15 @@ impl Response {
         };
 
         let headers: Vec<String> = match file_format {
-            "js" => vec!["Content-Type: text/javascript".to_string()],
+            "js" => {
+                vec![
+                    "Content-Type: text/javascript".to_string(),
+                    format!("Content-Length: {}", body.len())
+                ]
+            },
             _ => vec!["".to_string()]
         };
+
 
         Response::new(
             "HTTP/1.1".to_string(),
