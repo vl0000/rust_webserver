@@ -79,7 +79,7 @@ impl Response {
             version: "HTTP/1.1".to_string(),
             status: "200 Ok".to_string(),
             body: document,
-            headers: vec!["Content-type: text/html".to_string()]
+            headers: vec!["".to_string()]
         };
         
         Ok(response)
@@ -90,7 +90,7 @@ impl Response {
                 "HTTP/1.1".to_string(),
                 status_code.to_string(),
                 format!("<h1>{}</h1>", message),
-                vec!["Content-type: text/html".to_string()]
+                vec!["Content-Type: text/html".to_string()]
         )
     }
 
@@ -112,11 +112,16 @@ impl Response {
             _ => return Response::http_error("404", "Not Found")
         };
 
+        let headers: Vec<String> = match file_format {
+            "js" => vec!["Content-Type: text/javascript".to_string()],
+            _ => vec!["".to_string()]
+        };
+
         Response::new(
             "HTTP/1.1".to_string(),
             "200 OK".to_string(),
             body,
-            vec!["Content-type: text/html".to_string()]
+            headers
         )
     }
 
