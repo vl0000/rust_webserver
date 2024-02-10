@@ -13,7 +13,7 @@ mod tests {
 
     #[test]
     fn finds_static_file() {
-        let file = get_static_file("./static/", "/style.css");
+        let file = get_static_file("./static/", "/css/style.css");
         
         match file {
             Ok(_) => assert!(true, "File found"),

@@ -26,11 +26,23 @@ mod tests{
     fn can_send_css() {
         let file_format: &str = utils::get_file_format("style.css")
         .unwrap();
-        let file = get_static_file("./static/", "/style.css").unwrap();
+        let file = get_static_file("./static/", "/css/style.css").unwrap();
 
-        let response = Response::file_response(file_format, "/style.css");
+        let response = Response::file_response(file_format, "/css/style.css");
 
         assert_eq!(response.status, "200 OK");
-        assert_eq!(response.body, format!("<style>{}</style>", &file));
+        assert_eq!(response.body, format!("{}", &file));
+    }
+    
+    #[test]
+    fn headers_serailise() {
+        let response = Response::new(
+            "".to_string(),
+            "".to_string(),
+            "".to_string(),
+            vec!["Content-Type: text/html".to_string()]
+        );
+
+        assert_eq!(response.to_string(), " \r\nContent-Type: text/html\r\n");
     }
 }

@@ -12,7 +12,8 @@ mod tests {
         Response::new(
             "HTTP/1.1".to_string(),
             "200 OK".to_string(),
-            "".to_string()
+            "".to_string(),
+            vec!["Content-type: text/html".to_string()]
         )        
     }
 

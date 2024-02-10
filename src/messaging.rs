@@ -1,4 +1,4 @@
-use std::{io::{self, BufRead, BufReader, Error}, net::TcpStream};
+use std::{io::{self, BufRead, BufReader, Error}, net::TcpStream, vec};
 use std::fs;
 
 use crate::utils;
@@ -49,23 +49,28 @@ pub struct Response {
     pub version: String,
     pub status: String,
     pub body: String,
+    pub headers: Vec<String>
 }
 
 
 impl Response {
     /// Returns a new response
-    pub fn new(version: String, status: String, body: String) -> Response {
-        Response {version: version, status: status, body: body }
+    pub fn new(version: String, status: String, body: String, headers: Vec<String>) -> Response {
+        Response {version: version, status: status, body: body, headers: headers }
     }
 
     pub fn to_string(&self) -> String {
-        let response:String = format!("{} {}\r\n\r\n{}", self.version, self.status, self.body);
+
+        let headers = self.headers.join("\r\n");
+
+        let response:String = format!("{} {}\r\n{}\r\n{}", self.version, self.status, headers, self.body);
 
         return response;
     }
 
 
-    /// Creates a response, with a HTML document as a body
+    /// Creates a response, with a HTML document as a body.
+    /// Made redundant by file_response.
     #[deprecated]
     pub fn html_response(path: &str) -> Result<Response, Error>{
         let document: String = get_html_document(path)?;
@@ -73,7 +78,8 @@ impl Response {
         let response: Response = Response {
             version: "HTTP/1.1".to_string(),
             status: "200 Ok".to_string(),
-            body: document
+            body: document,
+            headers: vec!["Content-type: text/html".to_string()]
         };
         
         Ok(response)
@@ -83,7 +89,8 @@ impl Response {
         Response::new(
                 "HTTP/1.1".to_string(),
                 status_code.to_string(),
-                format!("<h1>{}</h1>", message)
+                format!("<h1>{}</h1>", message),
+                vec!["Content-type: text/html".to_string()]
         )
     }
 
@@ -108,8 +115,13 @@ impl Response {
         Response::new(
             "HTTP/1.1".to_string(),
             "200 OK".to_string(),
-            body
+            body,
+            vec!["Content-type: text/html".to_string()]
         )
+    }
+
+    pub fn add_header(&mut self, header: &str) {
+        self.headers.push(header.to_string());
     }
 }
 
