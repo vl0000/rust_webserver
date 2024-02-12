@@ -96,7 +96,13 @@ impl Response {
 
     /// Builds a response based on a file extension, JS, HTML, or CSS;
     /// In case of failure, it returns a response containing a HTTP error
-    pub fn file_response(file_format: &str, file_name: &str) -> Response {
+    pub fn file_response(file_name: &str) -> Response {
+
+        // let the match statement for the body handle the error by feeding it an invalid format.
+        let file_format = match utils::get_file_format(file_name) {
+            Ok(format) => format,
+            _ => "unknown"
+        };
 
         let file: String = match utils::get_static_file("./static/", file_name) {
             Ok(file) => file,

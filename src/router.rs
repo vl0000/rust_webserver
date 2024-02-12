@@ -24,15 +24,9 @@ impl Router {
                         handler(req)
                 },
                 None => {
-                    // let file_response handle the error by feeding an invalid format.
-                    let file_format = match utils::get_file_format(&req.endpoint) {
-                        Ok(format) => format,
-                        _ => "unknown"
-                    };
-                    
                     // Checks if the endpoint refers to a file
-                    // May return a 404
-                    Response::file_response(file_format, &req.endpoint)
+                    // May return a 404 or a response with the file
+                    Response::file_response(&req.endpoint)
                 }
         };
             stream.write_all(response.to_string().as_bytes()).unwrap();

@@ -4,7 +4,7 @@ use rust_webserver::{messaging::{Request, Response}, router::Router, server::Ser
 
 fn handler(req: Request) -> Response {
     drop(req);
-    return Response::html_response("index.html").unwrap();
+    return Response::file_response("index.html");
 }
 
 fn main() {
