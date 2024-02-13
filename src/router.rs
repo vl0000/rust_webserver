@@ -1,6 +1,6 @@
 use std::{collections::HashMap, io::Write, net::TcpStream};
 
-use crate::{messaging::{Request, Response}, utils};
+use crate::messaging::{Request, Response};
 
 /// Stores routes by method, then route.
 pub struct Router {
